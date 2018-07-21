@@ -30,7 +30,7 @@ client.start()
 #print('My infomation')
 #me = client.get_me()
 #print(me.stringify())
-print('All login and start done')
+print('Works!')
 
 # change localtime：ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 # https://stackoverflow.com/questions/4788533/python-strftime-gmtime-not-respecting-timezone
@@ -52,6 +52,7 @@ while True:
                 last_name = '%s年%s月%s日 %s时:%s分' % (y, m, d, hour, minu)
                 
             client(UpdateProfileRequest(last_name=last_name))
+            print('Updated -> ', last_name)
         # CPU sleep 
         time.sleep(1)
 
