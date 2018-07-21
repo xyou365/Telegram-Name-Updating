@@ -1,5 +1,8 @@
 # Telegram-Name-Updating
-Update (first/last/user) name of Telegram user every 10 seconds.
+
+Update (first/last/user) name of Telegram user every 10 seconds. 
+
+参考文档：<a href="https://telethon.readthedocs.io/en/stable/">Telethon</a>
 
 lastname实时更新效果：<a href="https://t.me/CodyDoby">Cody</a>
 
