@@ -49,7 +49,8 @@ while True:
             elif for_fun < 0.66:
                 last_name = '%s:%s %s %s' % (hour, minu, p, abbwn)
             else:
-                last_name = '%s%s%s %s:%s' % (y, m, d, hour, minu)
+                #last_name = '%s%s%s %s:%s' % (y, m, d, hour, minu)
+                last_name = ''
                 
             client(UpdateProfileRequest(last_name=last_name))
             print('Updated -> ', last_name)
