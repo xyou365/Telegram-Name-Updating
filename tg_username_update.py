@@ -30,6 +30,7 @@ client.start()
 #print('My infomation')
 #me = client.get_me()
 #print(me.stringify())
+print('All login and start done')
 
 # change localtime：ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 # https://stackoverflow.com/questions/4788533/python-strftime-gmtime-not-respecting-timezone
