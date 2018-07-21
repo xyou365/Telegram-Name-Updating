@@ -18,8 +18,8 @@ from random import random
 
 api_auth_file = 'api_auth'
 if os.path.exists(api_auth_file):
-    api_id = input('请输入你得api_id: ')
-    api_hash = input('请输入你的api_hash: ')
+    api_id = input('api_id: ')
+    api_hash = input('api_hash: ')
 else 
     api_id = 123456
     api_hash = '00000000000000000000000000000000'
@@ -31,7 +31,7 @@ client.start()
 #me = client.get_me()
 #print(me.stringify())
 
-# 修改本地时区：ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
+# change localtime：ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
 # https://stackoverflow.com/questions/4788533/python-strftime-gmtime-not-respecting-timezone
 while True:
     try:
@@ -39,10 +39,10 @@ while True:
         time_cur = strftime("%y:%m:%d:%H:%M:%S:%p:%a", time.localtime())
         y, m, d, hour, minu, seco, p, abbwn = time_cur.split(':')
 
-        # 每10秒更新一次 
+        # Update every 10 seconds 
         if int(seco) % 10 == 0:
             for_fun = random()
-            # 以一定概率更新
+            # with a prob
             if for_fun < 0.33:
                 last_name = '%s时:%s分' % (hour, minu)
             elif for_fun < 0.66:
@@ -51,10 +51,10 @@ while True:
                 last_name = '%s年%s月%s日 %s时:%s分' % (y, m, d, hour, minu)
                 
             client(UpdateProfileRequest(last_name=last_name))
-        # 让CPU休息一会儿 
+        # CPU sleep 
         time.sleep(1)
 
     except KeyboardInterrupt:
-        print('\n名字置空ing...\n')
+        print('\nUsername resetting...\n')
         client(UpdateProfileRequest(last_name=''))
         sys.exit()
