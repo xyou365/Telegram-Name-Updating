@@ -17,7 +17,7 @@ from time import gmtime, strftime
 from random import random
 
 api_auth_file = 'api_auth'
-if not os.path.exists(api_auth_file):
+if not os.path.exists(api_auth_file+'.session'):
     api_id = input('api_id: ')
     api_hash = input('api_hash: ')
 else:
