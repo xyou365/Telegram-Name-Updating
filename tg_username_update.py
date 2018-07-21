@@ -20,7 +20,7 @@ api_auth_file = 'api_auth'
 if not os.path.exists(api_auth_file):
     api_id = input('api_id: ')
     api_hash = input('api_hash: ')
-else 
+else:
     api_id = 123456
     api_hash = '00000000000000000000000000000000'
 
