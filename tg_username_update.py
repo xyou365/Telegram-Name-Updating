@@ -11,7 +11,7 @@
 from telethon import TelegramClient, sync
 from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.errors import SessionPasswordNeededError
-import time, sys
+import time, sys, io
 import os.path
 from time import gmtime, strftime
 from random import random
