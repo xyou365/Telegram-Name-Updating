@@ -16,6 +16,8 @@ import os.path
 from time import gmtime, strftime
 from random import random
 
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf8')
+
 api_auth_file = 'api_auth'
 if not os.path.exists(api_auth_file+'.session'):
     api_id = input('api_id: ')
