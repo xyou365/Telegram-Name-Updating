@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Scripts update last name of Telegram user every 10 seconds
+# Script updates last name of Telegram user every 10 seconds
 #
 # By @CodyDoby 
 # Telegram Group: https://t.me/google_dive
