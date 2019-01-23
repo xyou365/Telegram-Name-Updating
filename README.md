@@ -12,13 +12,13 @@ lastname实时更新效果：<a href="https://t.me/CodyDoby">Cody</a>
 
 创建应用：<a href="https://my.telegram.org/">https://my.telegram.org/</a>。只要填App title和Short name即可。获得api_id和api_hash。
 
-## 1. 下载
+## 1. 下载Demo小程序到VPS上，安装telethon和一些依赖包并
 
 <code>git clone https://github.com/xyou365/Telegram-Name-Updating.git</code>\
 <code>cd Telegram-Name-Updating</code>
 
 
-## 2. 在VPS上安装telethon和一些依赖包并运行Demo脚本
+## 2. 运行Demo小程序
 
 <code>pip3 install -r requirements.txt</code>\
 <code>python3 tg_username_update.py</code>
