@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Script updates last name of Telegram user every 10 seconds
-#
-# By @CodyDoby 
-# Telegram Group: https://t.me/google_dive
-# Blog: https://gfan.loan/
-#
+# Updated:
+#  1. 使用async来update lastname，更加稳定
+#  2. 增加emoji clock，让时间显示更加有趣味
 
-from telethon import TelegramClient, sync
+import time
+import os
+import sys
+import logging
+import asyncio
+import random
+from time import strftime
+from telethon import TelegramClient
 from telethon.tl.functions.account import UpdateProfileRequest
-from telethon.errors import SessionPasswordNeededError
-import time, sys
-import os.path
-from time import gmtime, strftime
-from random import random
+from emoji import emojize
+
+
+dizzy = emojize(":dizzy:", use_aliases=True)
+cake = emojize(":cake:", use_aliases=True)
+all_time_emoji_name = ["clock12", "clock1230", "clock1", "clock130", "clock2", "clock230", "clock3", "clock330", "clock4", "clock430", "clock5", "clock530", "clock6", "clock630", "clock7", "clock730", "clock8", "clock830", "clock9", "clock930", "clock10", "clock1030", "clock11", "clock1130"]
+time_emoji_symb = [emojize(":%s:" %s, use_aliases=True) for s in all_time_emoji_name]
 
 api_auth_file = 'api_auth'
 if not os.path.exists(api_auth_file+'.session'):
@@ -24,40 +30,72 @@ else:
     api_id = 123456
     api_hash = '00000000000000000000000000000000'
 
-client = TelegramClient(api_auth_file, api_id, api_hash)
-client.start()
+client1 = TelegramClient(api_auth_file, api_id, api_hash)
 
-#print('My infomation')
-#me = client.get_me()
-#print(me.stringify())
-print('Works!')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-# change localtime：ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
-# https://stackoverflow.com/questions/4788533/python-strftime-gmtime-not-respecting-timezone
-while True:
-    try:
-        #time_cur = strftime("%H:%M:%S:%p:%a", time.localtime())
-        time_cur = strftime("%y:%m:%d:%H:%M:%S:%p:%a", time.localtime())
-        y, m, d, hour, minu, seco, p, abbwn = time_cur.split(':')
 
-        # Update every 10 seconds 
-        if int(seco) % 10 == 0:
-            for_fun = random()
-            # with a prob
-            if for_fun < 0.33:
-                last_name = '%s:%s' % (hour, minu)
-            elif for_fun < 0.66:
-                last_name = '%s:%s %s %s' % (hour, minu, p, abbwn)
-            else:
-                #last_name = '%s%s%s %s:%s' % (y, m, d, hour, minu)
-                last_name = ''
-                
-            client(UpdateProfileRequest(last_name=last_name))
-            print('Updated -> ', last_name)
-        # CPU sleep 
-        time.sleep(1)
+async def change_name_auto():
+    # Set time zone to UTC+8
+    # ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime
+    # https://stackoverflow.com/questions/4788533/python-strftime-gmtime-not-respecting-timezone
 
-    except KeyboardInterrupt:
-        print('\nUsername resetting...\n')
-        client(UpdateProfileRequest(last_name=''))
-        sys.exit()
+    print('will change name')
+
+    while True:
+        try:
+            time_cur = strftime("%H:%M:%S:%p:%a", time.localtime())
+            hour, minu, seco, p, abbwn = time_cur.split(':')
+            if seco=='00' or seco=='30':
+                shift = 0
+                mult = 1
+                if int(minu)>30: shift=1
+                # print((int(hour)%12)*2+shift)
+                # hour symbols
+                hsym = time_emoji_symb[(int(hour)%12)*2+shift]
+                # await client1.send_message('me', hsym)
+                for_fun = random.random() 
+                if for_fun < 0.10:
+                    last_name = '%s时%s分 %s' % (hour, minu, hsym)
+                elif for_fun < 0.30:
+                    last_name = '%s:%s %s %s %s' % (hour, minu, p, abbwn, hsym)
+                elif for_fun < 0.60:
+                    last_name = '%s:%s %s UTC+8 %s' % (hour, minu, p, hsym)
+                elif for_fun < 0.90:
+                    last_name = '%s' % dizzy
+                else:
+                    last_name = '%s' % cake
+        
+                await client1(UpdateProfileRequest(last_name=last_name))
+                logger.info('Updated -> %s' % last_name)
+        
+        except KeyboardInterrupt:
+            print('\nwill reset last name\n')
+            await client1(UpdateProfileRequest(last_name=''))
+            sys.exit()
+
+        except Exception as e:
+            print('%s: %s' % (type(e), e))
+
+        await asyncio.sleep(1)
+
+
+# main function
+async def main(loop):
+
+    await client1.start()
+
+    # create new task
+    print('creating task')
+    task = loop.create_task(change_name_auto())
+    await task
+     
+    print('It works.')
+    await client1.run_until_disconnected()
+    task.cancel()
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main(loop))
