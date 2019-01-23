@@ -15,12 +15,14 @@ lastname实时更新效果：<a href="https://t.me/CodyDoby">Cody</a>
 ## 1. 下载
 
 <code>git clone https://github.com/xyou365/Telegram-Name-Updating.git
+  
 cd Telegram-Name-Updating
 </code>
 
-## 2. 在VPS上安装telethon和一些依赖包并运行Demo脚本</strong>（第一次发布scipt，写的不好不要拍死我）
+## 2. 在VPS上安装telethon和一些依赖包并运行Demo脚本
 
 <code>pip3 install -r requirements.txt
+  
 python3 tg_username_update.py</code>
 
 ## 3. api认证和用户登陆
