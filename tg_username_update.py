@@ -4,6 +4,7 @@
 # Updated:
 #  1. 使用async来update lastname，更加稳定
 #  2. 增加emoji clock，让时间显示更加有趣味
+#  3. 允许从config.json读取api_id和api_hash
 
 import time
 import os
@@ -23,12 +24,22 @@ all_time_emoji_name = ["clock12", "clock1230", "clock1", "clock130", "clock2", "
 time_emoji_symb = [emojize(":%s:" %s, use_aliases=True) for s in all_time_emoji_name]
 
 api_auth_file = 'api_auth'
+if os.path.exists("config.json"):
+    with open("config.json") as json_file:
+        json_obj = json.load(json_file)
+        api_id = json_obj["api_id"]
+        api_hash = json_obj["api_hash"]
+
 if not os.path.exists(api_auth_file+'.session'):
-    api_id = input('api_id: ')
-    api_hash = input('api_hash: ')
+    if api_id is None:
+        api_id = input('api_id: ')
+    if api_hash is None:
+        api_hash = input('api_hash: ')
 else:
-    api_id = 123456
-    api_hash = '00000000000000000000000000000000'
+    if api_id is None:
+        api_id = 123456
+    if api_hash is None:
+        api_hash = '00000000000000000000000000000000'
 
 client1 = TelegramClient(api_auth_file, api_id, api_hash)
 
